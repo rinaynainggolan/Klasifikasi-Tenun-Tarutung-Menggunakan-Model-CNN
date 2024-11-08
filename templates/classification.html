@@ -1,0 +1,113 @@
+<!-- classification.html -->
+{% extends 'import.html' %}
+
+{% block content %}
+<center>
+    <br><h2 style="color: #800000; font-family: 'Roboto', sans-serif; font-weight: 700; text-align: center; margin-bottom: 20px; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">
+        Classification and Visual Guide to Tenun Tarutung
+    </h2><br>
+
+    <!-- Form untuk unggah file -->
+    <form id="upload-file" method="post" enctype="multipart/form-data" style="margin: 20px 0; padding: 20px; border: 2px solid #800000; border-radius: 8px; background-color: #f9f9f9; width: 400px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+        <label for="imageUpload" style="font-size: 1.2em; color: #800000; margin-bottom: 10px; display: block;">Upload Your Image:</label>
+        <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg" 
+            style="padding: 10px; border: 2px solid #800000; border-radius: 6px; background-color: #800000; color: white; cursor: pointer; font-size: 1em; width: 100%;">
+    </form>
+
+    <!-- Bagian untuk pratinjau gambar yang diunggah -->
+    <div class="image-section" style="display:none; text-align: center; margin-top: 20px;">
+        <img id="imagePreview" class="img-responsive" src="#" style="width: 300px; height: 300px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);"/><br><br>
+        <div>
+            <button type="button" class="btn" id="btn-predict" style="background-color: #800000; color: white; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; font-size: 1em; transition: background-color 0.3s;">
+                Classify
+            </button>
+        </div>
+    </div>
+
+    <!-- Loader ketika sedang memproses prediksi -->
+    <div class="loader" style="display:none;"></div>
+
+    <!-- Bagian untuk menampilkan hasil prediksi atau pesan error -->
+    <h3 id="result" style="display:none; margin-top: 20px; font-size: 1.5em; color: #800000; text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">
+        <span></span>
+    </h3>
+
+    <!-- Tombol untuk melihat kegunaan -->
+    <button type="button" class="btn" id="btn-kegunaan" style="display:none; background-color: #800000; color: white; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; font-size: 1em; transition: background-color 0.3s;">
+        Description
+    </button>
+
+    <!-- Bagian untuk menampilkan kegunaan dari hasil prediksi -->
+    <div id="kegunaan" style="display:none;">
+        <h4 style="color: #800000; font-family: 'Roboto', sans-serif; text-align: center; margin-top: 20px;">Pattern Specifications & Uses:</h4>
+        <table style="width: 50%; margin: auto; border-collapse: collapse; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <tr style="background-color: #800000; color: white;">
+                <th style="text-align: left; padding: 12px;">Description</th>
+            </tr>
+            <tr>
+                <td id="kegunaan-text" style="text-align: justify; border: 1px solid #800000; padding: 16px; background-color: #f9f9f9; color: #333; font-size: 1.1em;"></td>
+            </tr>
+        </table>
+    </div>
+
+</center><br><br>
+
+<script>
+    // Saat file diunggah, tampilkan pratinjau gambar
+    $('#imageUpload').change(function() {
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('#imagePreview').attr('src', e.target.result);
+                $('.image-section').show();
+                $('#result').hide().text(''); // Sembunyikan hasil prediksi awalnya
+                $('#kegunaan').hide();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+
+    // Saat tombol "Classify!" ditekan
+    $('#btn-predict').click(function() {
+        var formData = new FormData($('#upload-file')[0]);
+        $('.loader').show();
+        $('#result').text('').hide(); // Sembunyikan dan kosongkan hasil sebelumnya
+        $('#kegunaan').hide();
+        $('#btn-kegunaan').hide(); 
+
+        // Mengirim file ke backend untuk prediksi
+        $.ajax({
+            type: 'POST',
+            url: '/predict',
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+                // Jika berhasil, tampilkan hasil prediksi
+                $('.loader').hide();
+                $('#result').text('Predicted Motif: ' + data.predicted_label).show();
+                $('#kegunaan-text').text(data.kegunaan);
+                $('#btn-kegunaan').show();
+            },
+            error: function(xhr) {
+                $('.loader').hide();
+                if (xhr.status === 400) {
+                    // Tampilkan pesan error dari respons JSON backend
+                    $('#result').text(xhr.responseJSON.error).show();
+                } else {
+                    // Tampilkan pesan error default
+                    $('#result').text('Gambar yang Anda Masukkan Bukan Tenun Tradisional Tarutung').show();
+                }
+            }
+        });
+    });
+
+    // Saat tombol "Description" ditekan
+    $('#btn-kegunaan').click(function() {
+        $('#kegunaan').toggle();
+    });
+</script>
+
+{% endblock %}

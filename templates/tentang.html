@@ -1,0 +1,206 @@
+{% extends 'import.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #e8fff7;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .about-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 1px;
+            background: linear-gradient(135deg, #f3f3f3, #e8fff7);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            opacity: 0; 
+            animation: fadeIn 1s forwards; 
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.5em;
+            color: #800000;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7em;
+            color: #800000;
+            background-color: #f3d5d5;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #800000, #ff6b6b);
+            padding: 20px;
+            border-radius: 8px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .decorative-line {
+            width: 290px;
+            height: 4px;
+            background-color: #800000;
+            margin: 10px auto;
+            border-radius: 2px;
+            animation: growLine 0.8s ease-in-out;
+        }
+
+        @keyframes growLine {
+            from {
+                width: 0;
+            }
+            to {
+                width: 60px;
+            }
+        }
+
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .about-image {
+            width: 33%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0; 
+            animation: slideIn 0.5s forwards; 
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px); 
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+
+        .image-gallery .about-image:not(:last-child) {
+            border-right: 3px solid rgba(128, 0, 0, 0.3); 
+            margin-right: -3px; 
+        }
+
+        .about-text {
+            margin-top: 20px;
+            font-size: 19px;
+            color: #222222;
+            font-family: 'Lora', serif;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            text-align: justify;
+            opacity: 0; 
+            animation: fadeIn 1s forwards 0.5s; 
+        }
+
+        .contact-section {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0; 
+            animation: fadeIn 1s forwards 1s; 
+        }
+
+        .contact-title {
+            font-size: 1.8em;
+            color: #800000;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .contact-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .contact-email {
+            font-size: 1em;
+            color: #333333;
+            font-weight: 600;
+            text-align: left;
+        }
+    </style>
+
+    <!-- Tentang Website Ini Section -->
+    <div class="about-container">
+        <h1 class="about-title">TENTANG WEBSITE INI</h1>
+        <div class="decorative-line"></div>
+    </div>
+
+    <!-- Image Gallery Section -->
+    <div class="image-gallery">
+        <img src="{{ url_for('static', filename='uploads/makna.jpg') }}" alt="Gambar1" class="about-image">
+        <img src="{{ url_for('static', filename='uploads/promosi.jpg') }}" alt="Gambar2" class="about-image">
+        <img src="{{ url_for('static', filename='uploads/selamat.jpg') }}" alt="Gambar3" class="about-image">
+    </div>
+
+    <!-- About Text Section -->
+    <div class="about-text">
+        <p>
+            Website ini adalah sistem informasi yang menyajikan pemahaman mengenai Tenun Tradisional Tarutung. 
+            Selain itu, website ini dilengkapi dengan fitur klasifikasi yang memungkinkan pengguna mengunggah 
+            gambar tenun untuk identifikasi motif secara otomatis menggunakan teknologi Convolutional Neural Network (CNN).
+        </p>
+        <p>
+            Pengguna juga dapat memanfaatkan fitur search berdasarkan nama motif yang memudahkan pencarian 
+            informasi dengan cepat. Website ini juga memiliki halaman Daftar Tenun yang menampilkan berbagai jenis tenun 
+            beserta penjelasan detailnya. Dengan demikian, website ini membantu memperkenalkan dan melestarikan kekayaan 
+            budaya serta kreativitas masyarakat Batak melalui tenun tradisional Tarutung.
+        </p>
+    </div>
+
+    <!-- Hubungi Kami Section -->
+    <div class="contact-section">
+        <h2 class="contact-title">HUBUNGI KAMI</h2>
+        <div class="contact-items">
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='uploads/email.jpg') }}" alt="Email" class="contact-image">
+                <div class="contact-text">
+                    <p class="contact-email">tarutungweavetech1001@gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='uploads/wa.jpg') }}" alt="WhatsApp" class="contact-image">
+                <div class="contact-text">
+                    <p class="contact-email">0812-6334-4985</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <img src="{{ url_for('static', filename='uploads/ig.jpg') }}" alt="Instagram" class="contact-image">
+                <div class="contact-text">
+                    <p class="contact-email">@tarutungweavetech_.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

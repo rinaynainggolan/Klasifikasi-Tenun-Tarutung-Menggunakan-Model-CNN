@@ -1,0 +1,68 @@
+{% extends 'import.html' %}
+
+{% block content %}
+<main>
+    
+
+    <div class="search-results" style="text-align: center;">
+        {% if searched %}
+            {% if results %}
+            <h3 style="color: #800000; font-size: 2em; margin-bottom: 15px; text-align: center; text-transform: uppercase; position: relative;">
+                Hasil Pencarian:
+                <span style="display: block; width: 280px; height: 5px; background-color: #800000; margin: 10px auto; border-radius: 2px;"></span> 
+            </h3>            
+                <div class="card-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+                    {% for tenun in results %}
+                        <div class="card" style="background-color: #ffe6e6; border: 1px solid #ddd; border-radius: 15px; margin: 10px; padding: 15px; width: 300px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                            <h3 style="color: #800000; font-size: 1.5em; margin: 10px 0;">{{ tenun.nama }}</h3>
+                            <img src="{{ url_for('static', filename=tenun.gambar) }}" alt="{{ tenun.nama }}" width="100%" style="border-radius: 10px; transition: transform 0.3s; max-height: 200px; object-fit: cover;">
+                            <p style="color: #555; text-align: justify; margin-top: 10px;">{{ tenun.kegunaan }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div style="background-color: #ffe6e6; border: 2px dashed #800000; border-radius: 10px; padding: 20px; margin: 15px; position: relative;">
+                    <h3 style="color: #800000;">Oops! Tidak ada hasil ditemukan untuk:</h3>
+                    <p style="color: #800000; font-weight: bold; font-size: 1.2em;">"{{ keyword }}"</p>
+                    <p style="color: #555;">Coba gunakan kata kunci lain atau periksa ejaan Anda.</p>
+                    <img src="{{ url_for('static', filename='uploads/no-result.jpg') }}" alt="No results" style="width: 120px; margin-top: 10px; bottom: -15px; right: 10px;">
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</main>
+
+<style>
+    body {
+        background-color: #e8fff7; 
+        font-family: Arial, sans-serif; 
+    }
+
+    form input:focus {
+        border-color: #800000; 
+        outline: none;
+    }
+
+    button:hover {
+        background-color: #6a0000; 
+        transform: scale(1.05); 
+    }
+
+    .card {
+        transition: transform 0.3s, box-shadow 0.3s; 
+    }
+
+    .card:hover {
+        transform: translateY(-5px); 
+        box-shadow: 0 6px 30px rgba(0,0,0,0.2); 
+    }
+
+    .card img {
+        transition: transform 0.3s; 
+    }
+
+    .card img:hover {
+        transform: scale(1.05); 
+    }
+</style>
+{% endblock %}

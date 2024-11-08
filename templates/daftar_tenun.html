@@ -1,0 +1,206 @@
+<!-- daftar_tenun.html -->
+{% extends 'import.html' %}
+
+{% block content %}
+<main>
+    <div class="title-container">
+        <h2 class="title">DAFTAR MOTIF TENUN <br> TRADISIONAL TARUTUNG
+            <span class="subtitle"> Temukan berbagai macam motif tenun tradisional Tarutung yang kaya akan budaya</span>
+        </h2>
+    </div>
+    <div class="card-container">
+        {% for tenun in tenun_data %}
+            <div class="card">
+                <h3><a href="{{ url_for('detail_tenun', nama_tenun=tenun.nama) }}">{{ tenun.nama }}</a></h3>
+                <img src="{{ url_for('static', filename=tenun.gambar) }}" alt="{{ tenun.nama }}">
+            </div>
+        {% endfor %}
+    </div>
+        
+</main>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #e8fff7;
+    }
+
+    /* Style dasar untuk title-container */
+    .title-container {
+        background-image: url('{{ url_for('static', filename='uploads/daftar.jpg') }}');
+        background-size: cover;
+        background-position: center;
+        filter: brightness(85%);
+        width: 100%;
+        height: 550px;
+        margin-top: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        padding: 20px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .title-container.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .title {
+        font-family: 'Merriweather', serif;
+        font-weight: bold;
+        text-align: center;
+        color: #b90909;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.781);
+        border-radius: 5px;
+        font-size: 40px;
+    }
+
+    .subtitle {
+        display: block;
+        color: rgb(134, 23, 23);
+        font-style: italic;
+        font-family: 'Quicksand', sans-serif;
+        margin-top: 5px;
+        font-size: 18px;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+
+    /* Style dasar kartu */
+    .card {
+        background-color: rgb(255, 234, 234);
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin: 10px;
+        padding: 10px 20px;
+        width: 300px;
+        height: 390px;
+        text-align: center;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .card.card-visible {
+        opacity: 1;
+        width: 340px;
+        transform: translateY(0);
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    /* Animasi untuk kartu */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card h3 {
+        display: inline-block;
+        background-color: #b97a7a;
+        color: rgb(255, 255, 255);
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .card h3:hover{
+        background-color: #a10808;
+    }
+    .card h3 a {
+        color: white; 
+    }
+
+    .card p {
+        text-align: justify;
+        margin: 0;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 17px;
+    }
+
+    .img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 5px 0;
+        background-color: #b90909;
+        color: white; 
+        text-decoration: none; 
+        border-radius: 5px; 
+        transition: background-color 0.3s ease; 
+    }
+
+    .button:hover {
+        background-color: #a10808; 
+    }
+    .card img {
+        width: 100%; 
+        height: 400px; 
+        object-fit: cover; 
+        border-radius: 5px; 
+    }
+</style>
+
+<!-- Script untuk animasi menggunakan Intersection Observer -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const titleContainer = document.querySelector('.title-container');
+        const cards = document.querySelectorAll('.card');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible'); 
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        observer.observe(titleContainer); 
+
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('card-visible'); 
+                    cardObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cards.forEach(card => cardObserver.observe(card)); 
+    });
+</script>
+
+<!-- Link Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400&display=swap" rel="stylesheet">
+
+{% endblock %}

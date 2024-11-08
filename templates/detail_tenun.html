@@ -1,0 +1,138 @@
+<!-- detail_tenun.html -->
+{% extends 'import.html' %}
+
+{% block content %}
+<main>
+    <div class="detail-container">
+        <h2 class="tenun-name">{{ tenun.nama }}</h2>
+        <!-- Gambar tenun yang dapat di-zoom saat diklik -->
+        <img src="{{ url_for('static', filename=tenun.gambar) }}" alt="{{ tenun.nama }} - Gambar Tenun" width="300" class="zoomable" onclick="openModal()">
+        <p>{{ tenun.kegunaan }}</p>
+        
+        <!-- Tautan untuk kembali ke daftar tenun -->
+        <a href="{{ url_for('daftar_tenun') }}" class="back-button">Kembali ke Daftar Tenun</a>
+    </div>
+</main>
+
+<!-- Modal untuk zoom gambar -->
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+</div>
+
+<!-- Mengimpor font dari Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+<style>
+    /* Detail container styling */
+    .detail-container {
+        text-align: center;
+        margin: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .detail-container img.zoomable {
+        margin-bottom: 20px !important;
+    }
+
+    h2.tenun-name {
+        color: #b90909;
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #333;
+        text-align: justify;
+        max-width:600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .back-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #702323;
+        color: #fff;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+        text-transform: uppercase;
+    }
+
+    .back-button:hover {
+        background-color: #702323;
+        color:#fff;
+        text-decoration: none;
+    }
+
+    /* Modal styling */
+    .modal {
+        display: none; /* Tersembunyi secara default */
+        position: fixed;
+        z-index: 1;
+        padding-top: 60px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8); /* Background semi-transparan */
+    }
+
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        border-radius: 10px;
+    }
+
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #ffffff;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .close:hover {
+        color: #f1f1f1;
+    }
+
+    /* Animasi zoom in untuk modal */
+    .modal-content {
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from {transform: scale(0.7)} 
+        to {transform: scale(1)}
+    }
+</style>
+
+<script>
+    // Membuka modal dan menampilkan gambar yang diklik
+    function openModal() {
+        var modal = document.getElementById("imageModal");
+        var modalImage = document.getElementById("modalImage");
+        modalImage.src = event.target.src; // Mengambil sumber gambar yang diklik
+        modal.style.display = "block"; // Menampilkan modal
+    }
+
+    // Menutup modal
+    function closeModal() {
+        var modal = document.getElementById("imageModal");
+        modal.style.display = "none";
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,397 @@
+<!-- home.html -->
+{% extends 'import.html' %}
+
+{% block content %}
+    <style>
+        body {
+            background-color: #e8fff7;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            padding-top: 25px;
+        }
+
+        .header-image {
+            width: 100%;
+            max-height: 590px;
+            object-fit: cover;
+            position: relative;
+            animation: fadeIn 2s forwards;
+            padding-top: 30px;
+            filter: brightness(75%);
+            border: 5px solid #800000; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.808);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #701226;
+            margin: 0;
+            font-size: 45px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: bold;
+            animation: slideIn 1s forwards;
+        }
+
+        .subheading {
+            font-size: 27px;
+            font-family: 'Merriweather', serif;
+            color: #971b1b;
+            margin-top: 10px;
+            animation: slideIn 1.5s forwards;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .description {
+            font-size: 16px;
+            font-family: 'Georgia', Times, serif;
+            color: #3f0303;
+            margin-top: 5px;
+            font-weight: bold;
+            font-style: italic;
+            animation: slideIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            border: 2px solid #701226;
+            border-radius: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .section-title {
+            font-family: 'Times New Roman', serif;
+            font-size: 30px;
+            color: #701226;
+            margin: 10px 0;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            border-bottom: 2px solid #701226;
+            padding-bottom: 10px;
+        }
+
+        .section-text {
+            font-family: 'Georgia', Times, serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #3f0303;
+            margin: 15px 0;
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            text-align: justify;
+        }
+
+        .section-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .definition-box {
+            background-color: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            display: flex; 
+            align-items: flex-start;
+        }
+
+        .definition-content {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .image-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .definition-image {
+            width: 100%; 
+            max-width: 250px; 
+            border-radius: 5px; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+            margin-top: 10px;
+        }
+        .process-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .process-box {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            flex-direction: row-reverse;  
+        }
+        .process-image {
+            width: 150px;
+            height: auto;
+            margin-left: 20px; 
+            border-radius: 10px;
+        }
+        .header-container {
+        position: relative;
+        height: 90vh; 
+        overflow: hidden;
+        }
+
+        .slides {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 1s ease;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+    </style>
+
+<div class="header-container">
+    <div class="slides">
+        <div class="slide active" style="background-image: url('{{ url_for('static', filename='uploads/background.jpg') }}');">
+            <div class="overlay">
+                <h1>TENUN TRADISIONAL TARUTUNG</h1>
+                <p class="subheading">Melestarikan Tradisi Melalui Karya Seni</p>
+                <p class="description">Dalam setiap tenun Tarutung, terdapat dedikasi untuk melestarikan nilai-nilai 
+                    <br> budaya yang mencerminkan keragaman dan kreativitas masyarakat Batak.</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('{{ url_for('static', filename='uploads/selamat.jpg') }}');">
+            <div class="overlay">
+                <h1>EKSPRESI BUDAYA DALAM TENUN TARUTUNG</h1>
+                <p class="subheading">Menghadirkan Identitas yang Unik</p>
+                <p class="description">Setiap pola dan warna dalam tenun Tarutung adalah ungkapan identitas masyarakat 
+                    Batak yang kaya <br> yang patut dilestarikan dan dibanggakan.</p>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('{{ url_for('static', filename='uploads/background1.jpg') }}');">
+            <div class="overlay">
+                <h1>KARYA SENI YANG MENGINSPIRASI</h1>
+                <p class="subheading">Mewarnai Hidup dengan Kreativitas</p>
+                <p class="description">Dengan tangan terampil dan imajinasi yang tak terbatas, 
+                    <br> pengrajin tenun Tarutung menciptakan karya seni yang memukau dan bernilai tinggi.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="content-container">
+        <h2 class="section-title">DEFINISI TENUN</h2>
+        <div class="definition-box">
+            <div class="definition-content">
+                <p class="section-text scroll-animation">
+                    Tenun adalah teknik <strong>pembuatan kain</strong> yang menggunakan prinsip sederhana, yaitu <strong>menggabungkan</strong> benang secara vertikal dan horizontal.
+                </p>
+                <p class="section-text scroll-animation">
+                    Dengan kata lain, kain tenun terbentuk dari <strong>persilangan benang</strong> lusi dan benang pakan secara bergantian. Kain tenun umumnya dibuat dari berbagai serat, seperti serat kayu, kapas, sutra, dan bahan lainnya.
+                </p>
+            </div>
+            <img src="{{ url_for('static', filename='uploads/definisi.jpg') }}" alt="Gambar Tenun" class="definition-image">
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h2 class="section-title">SEJARAH TENUN</h2>
+        <div class="definition-box">
+            <div class="definition-content">
+                <p class="section-text scroll-animation">
+                    Para antropolog berpendapat bahwa kegiatan menenun telah ada sejak <strong>sekitar tahun 500 SM</strong>, 
+                    terutama berkembang di wilayah Mesopotamia, Mesir, India, dan Turki.
+                </p>
+                <p class="section-text scroll-animation">
+                    Kain tenun tradisional Indonesia diyakini telah berkembang sejak <strong>era Neolitikum (masa Prasejarah)</strong>. 
+                    Hal ini dibuktikan oleh <string>penemuan</string> benda-benda prasejarah, seperti sisa tenunan, alat pemintal, dan 
+                    kain dari kapas yang menunjukkan adanya jejak tenunan. Temuan-temuan ini, yang berusia lebih dari 3.000 
+                    tahun, ditemukan di beberapa situs arkeologi, termasuk Sumba Timur, Gunung Wingko Daerah Istimewa Yogyakarta, Gilimanuk, 
+                    dan Melolo.
+                </p>
+                <p class="section-text scroll-animation">
+                    <strong>Keterampilan menganyam</strong> menjadi dasar bagi masyarakat dalam mempelajari tenun. 
+                    Seiring waktu, kerajinan ini berkembang di Indonesia, dengan peningkatan mutu, warna, dan motif yang tersebar luas.
+                </p>
+                <p class="section-text scroll-animation">
+                    Motif tenun <strong>terinspirasi</strong> dari budaya dan lingkungan setempat, mencerminkan kekayaan dan 
+                    keindahan yang beragam. Awalnya terkait dengan upacara adat dan keagamaan, kini kain tenun 
+                    juga digunakan untuk busana dan interior.
+                </p>
+            </div>
+            
+            <!-- Menambahkan gambar -->
+            <div class="image-group">
+                <img src="{{ url_for('static', filename='uploads/bertenun.jpg') }}" alt="Gambar Tenun 1" class="definition-image">
+                <img src="{{ url_for('static', filename='uploads/alat.jpg') }}" alt="Gambar Tenun 2" class="definition-image">
+                <img src="{{ url_for('static', filename='uploads/motif.jpg') }}" alt="Gambar Tenun 3" class="definition-image">
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h2 class="section-title">TENUN TRADISIONAL TARUTUNG</h2>
+        <div class="definition-box">
+            <div class="definition-content">
+                <p class="section-text scroll-animation">
+                    <strong>Tenun tradisional Tarutung</strong> adalah warisan budaya berharga dari suku Batak Toba di Sumatera Utara, 
+                    Indonesia. Sebagian besar masyarakat di daerah ini mengandalkan produksi tenun ulos dan songket 
+                    sebagai salah satu sumber utama penghidupan mereka, yang berperan penting dalam mendukung perekonomian lokal.
+                </p>
+                <p class="section-text scroll-animation">
+                    Sejak usia dini, wanita di Tarutung telah <strong>belajar memintal benang</strong>. Mereka memulai dengan membantu 
+                    penenun berpengalaman dan perlahan mempelajari setiap tahap, mulai dari mengikat, menata benang, hingga 
+                    menenun dengan berbagai motif.
+                </p>
+                <p class="section-text scroll-animation">
+                    Selain ulos, Tarutung juga dikenal sebagai <strong>penghasil songket berkualitas tinggi</strong> yang harganya bahkan 
+                    lebih mahal dibandingkan ulos.
+                </p>
+                <p class="section-text scroll-animation">
+                    Tenun dari Tapanuli Utara, terutama Tarutung, terkenal karena kualitasnya dan sering digunakan dalam upacara 
+                    adat. Kini, tenun Tarutung mulai <strong>dimodifikasi</strong> menjadi pakaian modern, meski bentuk tradisional seperti songket dan ulos 
+                    tetap umum dipakai dalam acara keagamaan dan pernikahan masyarakat Batak.
+                </p>
+            </div>
+            <div class="image-group">
+            <img src="{{ url_for('static', filename='uploads/tarutung.jpg') }}" alt="Gambar Kota Tarutung" class="definition-image">
+            <img src="{{ url_for('static', filename='uploads/petenun_tarutung.jpg') }}" alt="Gambar Kota Tarutung" class="definition-image">
+            <img src="{{ url_for('static', filename='uploads/ulos.jpg') }}" alt="ulos" class="definition-image">
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <h2 class="section-title">PROSES PEMBUATAN TENUN TRADISIONAL TARUTUNG</h2>
+        <div class="process-container">
+            <div class="process-box">
+                <img src="{{ url_for('static', filename='uploads/benang.jpg') }}" alt="Proses 1" class="process-image">
+                <p class="section-text scroll-animation">
+                    <strong>Mangkanji :</strong> Benang yang telah diwarnai kemudian direndam dalam larutan tepung kanji, lalu dijemur agar benang menjadi lebih kuat dan tidak mudah putus.
+                </p>
+            </div>
+            <div class="process-box">
+                <img src="{{ url_for('static', filename='uploads/kelosan.jpg') }}" alt="Proses 2" class="process-image">
+                <p class="section-text scroll-animation">
+                    <strong>Mangkelos :</strong> Setelah benang kering, proses pemintalan dilakukan menggunakan alat tradisional yang disebut kelosan, yang berfungsi sebagai dasar kain. Pengrajin perlu mengatur ketegangan dan kecepatan dengan hati-hati untuk memastikan benang yang dihasilkan memiliki kualitas yang baik.
+                </p>
+            </div>
+            <div class="process-box">
+                <img src="{{ url_for('static', filename='uploads/anian.jpg') }}" alt="Proses 3" class="process-image">
+                <p class="section-text scroll-animation">
+                    <strong>Mangani :</strong> Benang yang telah dipintal disusun menggunakan alat yang disebut anian. Dalam proses ini, benang ditarik dan dililitkan mengelilingi alat untuk mempersiapkannya sebelum digunakan dalam penenunan.
+                </p>
+            </div>
+            <div class="process-container">
+                <div class="process-box">
+                    <img src="{{ url_for('static', filename='uploads/mamutik.jpg') }}" alt="Proses 4" class="process-image">
+                    <p class="section-text scroll-animation">
+                        <strong>Mamutik :</strong> Setelah benang dikeluarkan dari anian, benang tersebut disusun pada alat tenun yang dikenal sebagai ATBM (Alat Tenun Bukan Mesin). Selanjutnya, proses pembuatan motif dilakukan dengan teknik yang disebut mamutik dalam bahasa Batak. Pada tahap ini, benang tambahan yang disebut giun dimasukkan ke sela-sela benang dasar untuk menciptakan pola dan motif yang diinginkan.
+                    </p>
+                </div>
+                <div class="process-box">
+                    <img src="{{ url_for('static', filename='uploads/proses_bertenun.jpg') }}" alt="Proses 5" class="process-image">
+                    <p class="section-text scroll-animation">
+                        <strong>Martonun :</strong> Proses menenun dimulai dengan menggabungkan benang pakan dan lungsi sesuai dengan pola motif. Pengrajin harus bekerja dengan sabar, menekan pedal, dan menarik bilah untuk memastikan bahwa motif dan tekstur kain terbentuk sempurna. Setiap lembar kain memerlukan waktu yang cukup lama untuk diselesaikan, terutama yang bermotif rumit.
+                    </p>
+                </div>
+                <div class="process-box">
+                    <img src="{{ url_for('static', filename='uploads/gambarhasil.jpg') }}" alt="Proses 6" class="process-image">
+                    <p class="section-text scroll-animation">
+                        <strong>Manggotap :</strong> Setelah proses penenunan selesai dan benang telah membentuk selembar kain, kain tersebut kemudian dipotong dan dilepaskan dari alat tenun.
+                    </p>
+                </div>
+            </div>
+        </div>    
+            
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollAnimations = document.querySelectorAll('.scroll-animation');
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            scrollAnimations.forEach(animation => {
+                observer.observe(animation);
+            });
+        });
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 4000); // Ganti slide setiap 4 detik
+        </script>
+
+{% endblock %}
